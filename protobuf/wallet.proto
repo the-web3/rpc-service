@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = "./protobuf/wallet";
+package the_web_three.wallet;
+
+message SupportCoinsRequest{
+  string consumer_token = 1;
+  string chain = 2;
+  string network = 3;
+}
+
+message SupportCoinsResponse {
+  string code = 1;
+  string msg = 2;
+  bool support = 3;
+}
+
+message WalletAddressRequest {
+  string consumer_token = 1;
+  string chain = 2;
+  string network = 3;
+}
+
+message WalletAddressResponse {
+  string code = 1;
+  string msg = 2;
+  string address = 3;
+  string public_key = 4;
+}
+
+service WalletService {
+  rpc getSupportCoins(SupportCoinsRequest) returns (SupportCoinsResponse) {}
+  rpc getWalletAddress(WalletAddressRequest) returns (WalletAddressResponse) {}
+}
