@@ -10,6 +10,7 @@ import (
 )
 
 func (s *RpcServer) GetSupportCoins(ctx context.Context, in *wallet.SupportCoinsRequest) (*wallet.SupportCoinsResponse, error) {
+
 	return &wallet.SupportCoinsResponse{
 		Code:    strconv.Itoa(200),
 		Msg:     "success request",
