@@ -1,4 +1,4 @@
-package services
+package rpc
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/the-web3/rpc-service/protobuf/wallet"
-	"github.com/the-web3/rpc-service/server/addresss"
+	"github.com/the-web3/rpc-service/services/addresss"
 )
 
 func (s *RpcServer) GetSupportCoins(ctx context.Context, in *wallet.SupportCoinsRequest) (*wallet.SupportCoinsResponse, error) {

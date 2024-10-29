@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/the-web3/rpc-service/services/rest"
 
 	"github.com/urfave/cli/v2"
 
@@ -14,11 +15,11 @@ import (
 	"github.com/the-web3/rpc-service/config"
 	"github.com/the-web3/rpc-service/database"
 	flags2 "github.com/the-web3/rpc-service/flags"
-	services "github.com/the-web3/rpc-service/server"
+	services "github.com/the-web3/rpc-service/services/rpc"
 )
 
 func runRpc(ctx *cli.Context, shutdown context.CancelCauseFunc) (cliapp.Lifecycle, error) {
-	fmt.Println("running grpc server...")
+	fmt.Println("running grpc services...")
 	cfg := config.NewConfig(ctx)
 	grpcServerCfg := &services.RpcServerConfig{
 		GrpcHostname: cfg.RpcServer.Host,
@@ -50,13 +51,25 @@ func runMigrations(ctx *cli.Context) error {
 	return db.ExecuteSQLMigration(cfg.Migrations)
 }
 
+func runRestApi(ctx *cli.Context, shutdown context.CancelCauseFunc) (cliapp.Lifecycle, error) {
+	log.Info("running api...")
+	cfg := config.NewConfig(ctx)
+	return rest.NewApi(ctx.Context, &cfg)
+}
+
 func NewCli(GitCommit string, GitData string) *cli.App {
 	flags := flags2.Flags
 	return &cli.App{
 		Version:              params.VersionWithCommit(GitCommit, GitData),
-		Description:          "An exchange wallet scanner services with rpc and rest api server",
+		Description:          "An exchange wallet scanner services with rpc and rest api services",
 		EnableBashCompletion: true,
 		Commands: []*cli.Command{
+			{
+				Name:        "api",
+				Flags:       flags,
+				Description: "Run api services",
+				Action:      cliapp.LifecycleCmd(runRestApi),
+			},
 			{
 				Name:        "rpc",
 				Flags:       flags,

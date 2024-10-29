@@ -57,7 +57,7 @@ func (c *walletServiceClient) GetWalletAddress(ctx context.Context, in *WalletAd
 	return out, nil
 }
 
-// WalletServiceServer is the server API for WalletService service.
+// WalletServiceServer is the services API for WalletService service.
 // All implementations should embed UnimplementedWalletServiceServer
 // for forward compatibility
 type WalletServiceServer interface {
